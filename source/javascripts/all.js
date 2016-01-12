@@ -1,34 +1,48 @@
 //= require_tree .
 
+/* Everybody Counts
+What you see below is a big old config variable. All this script does is check a csv for regular expressions then add some data based on it.
 
+So in your bank statment you might see 'TESCO PCS 103042' because you brought some dinner.
+So add a rule to the config file like this:
+
+{
+  "descriptor": ["TESCO"],
+  "toAccount": "Food",
+  "fromAccount": "Bank",
+  "reference": "I NEED TO EAT" 
+}
+
+
+If you shop at more than just tesco..
+
+{
+  "descriptor": ["TESCO", "WAITROSE", "SAINSBURYS"],
+  "toAccount": "Food",
+  "fromAccount": "Bank",
+  "reference": "I NEED TO EAT" 
+}
+
+If all you need is a reference added..
+
+{
+  "descriptor": ["TESCO", "WAITROSE", "SAINSBURYS"],
+  "reference": "I NEED TO EAT" 
+}
+
+It has defaults and will add 'NEEDS CHECK' as a reference to any records that it doesn't recognise. There are a load of descriptors already that are catered towards 
+a sole trader. 
+
+
+Scroll down to configure the fields of the CSV your bank provides.
+*/
 var config = {
   "descriptors" : [
-    {
-      "descriptor": ["MAJOR"],
-      "toAccount": "Bank Account",
-      "fromAccount": "Sales Account",
-      "reference": "",
-      "customer": "Ammanda Major"
-    },
-    {
-      "descriptor": ["COBBETT HILL"],
-      "toAccount": "Bank Account",
-      "fromAccount": "Sales Account",
-      "reference": "",
-      "customer": "Cobbett Hill Earth Station"
-    },
     {
       "descriptor": ["B AND Q"],
       "toAccount": "Equipment",
       "fromAccount": "Bank Account",
       "supplier": "B&Q"
-    },
-    {
-      "descriptor": ["VIEWSAT"],
-      "toAccount": "Bank Account",
-      "fromAccount": "Sales Account",
-      "reference": "",
-      "customer": "Viewsat"
     },
     {
       "descriptor": ["COVERS"],
@@ -157,12 +171,6 @@ var config = {
       "supplier": "City Electrical Factors"
     },
     {
-      "descriptor": ["EMC SHIELDING SOLU"],
-      "toAccount": "Bank Account",
-      "fromAccount": "Sales Account",
-      "customer": "EMC Shielding"
-    },
-    {
       "descriptor": ["JEWSON"],
       "toAccount": "Equipment",
       "fromAccount": "Bank Account",
@@ -249,6 +257,11 @@ var config = {
     }
   ]
 };
+// Map your banks CSV
+// Set the column number of each column of the csv you get from your account
+// ie.
+// Column Number   0      |       1      |       2       |
+//                Date    |     Type     |  Description  |
 
 var columns = {
   'Date' : 0,
@@ -259,29 +272,34 @@ var columns = {
   'AccountName' : 5,
   'AccountNumber' : 6
 }
-
+// Gets input from file dialog
 var fileInput = $('input#statement');
+// Sets validation digit
 var totalInputRecords = 0;
+// Empty array for new csv's
 var outputAccounts = [];
 // Listens for selected csv
 fileInput.on('change', function(){
-  // Calls parse on file
+  // Calls parse on the uploaded file
   Papa.parse(fileInput[0].files[0], {
     // On parse complete
     complete: function(results) {
       var accounts = results.data;
+      // Checks the length of the input account
       totalInputRecords = accounts.length;
       // Loops through each account
       for(var x = 0; x < accounts.length; x++){
-        // Sets exiting accoutn
+        // Sets an account variable
         var account = accounts[x];
-        // Creates a new account object
+        // Creates a new account vairable
         var newAccount = {
+          // Moves accross existing data
           'date': account[columns.Date],
           'type': account[columns.Type],
           'value': account[columns.Value],
           'balance': account[columns.Balance],
           'description': account[columns.Description],
+          // Sets default fields
           'reference': '',
           'fromAccount': 'Bank Account',
           'toAccount': 'Bank Account',
@@ -305,15 +323,17 @@ fileInput.on('change', function(){
             describedRecord = true;
           }
         }
+        // Adds the needs check reference to unknown accounts
         if(!describedRecord) {
           newAccount.reference = 'NEEDS CHECK';
           outputAccounts.push(newAccount);
         }
       }      
-      // Convert back to csv and export
-      console.log(outputAccounts);
+      // Checks if the number of outputted accoutns matches the inputted, logs to the console if not
       if(totalInputRecords - outputAccounts.length > 0) {console.log(totalInputRecords - outputAccounts.length + " unprocessed records..")}
+      // Convert back to csv and export
       var newCsv = Papa.unparse(outputAccounts); 
+      // Creates a download of the new CSV
       download(newCsv, "accounts.csv", "text/csv");
     }
   });
