@@ -98,6 +98,12 @@ var config = {
       "reference": "Van lease"
     },
     {
+      "descriptor": ["A.H.C."],
+      "toAccount": "Equipment",
+      "fromAccount": "Bank Account",
+      "supplier": "A.H.C."
+    },
+    {
       "descriptor": ["AA MEMBERSHIP"],
       "toAccount": "Motor Expense Account",
       "fromAccount": "Bank Account",
@@ -174,7 +180,13 @@ var config = {
       "supplier": "TLC"
     },
     {
-      "descriptor": ["LIDL", "APPLE", "GOOGLE", "WAITROSE", "THOMAS COOK", "SELFSERVE", "VIRGIN PURE", "COSTCO", "BEST MANGAL", "GRADUATION SERVICE", "DVLAPERSONALISEDRE", "LAHORI", "TESCO STORES", "TEX", "SAINSBURYS S/MKTS", "B289BDA", "LOD628W", "ALDI", "AHMET GUCLU"],
+      "descriptor": ["TOOLSTATION"],
+      "toAccount": "Equipment",
+      "fromAccount": "Bank Account",
+      "supplier": "Tool Station LTD."
+    },
+    {
+      "descriptor": ["COSTA", "LIDL", "APPLE", "GOOGLE", "WAITROSE", "THOMAS COOK", "SELFSERVE", "VIRGIN PURE", "COSTCO", "BEST MANGAL", "GRADUATION SERVICE", "DVLAPERSONALISEDRE", "LAHORI", "TESCO STORES", "SAINSBURYS S/MKTS", "B289BDA", "LOD628W", "ALDI", "AHMET GUCLU"],
       "toAccount": "Wages",
       "fromAccount": "Bank Account"
     },
@@ -191,12 +203,17 @@ var config = {
       "reference": "NicEic Costs"
     },
     {
+      "descriptor": ["A/C", "O/DRAFT"],
+      "toAccount": "Bank Charges Account",
+      "fromAccount": "Bank Account"
+    },
+    {
       "descriptor": ["VIRGIN MOBILE", "LYCA"],
       "toAccount": "Telephone",
       "fromAccount": "Bank Account"
     },
     {
-      "descriptor": ["BP", "ESSO", "SHELL", "SAINSBURYS PETROL", "TCS", "KINGSMEAD", "SERV", "COOP", "CO-OP"],
+      "descriptor": ["FARLINGTON 133", "LIPHOOK NORTH", "FLEET MWS", "TESCO PFS", "BP", "ESSO", "SHELL", "SAINSBURYS PETROL", "TCS", "KINGSMEAD", "SERV", "COOP", "CO-OP", "EASTERN ROAD"],
       "toAccount": "Travel and Subsistence Account",
       "fromAccount": "Bank Account",
       "reference": "Diesel"
@@ -223,6 +240,12 @@ var config = {
       "toAccount": "Stationery",
       "fromAccount": "Bank Account",
       "reference": "Printing Supplies"
+    },
+    {
+      "descriptor": ["MARK MEECH", "SINAN GUCLU"],
+      "toAccount": "Contruction Industry - Subcontractors Paymentss",
+      "fromAccount": "Bank Account",
+      "reference": "Subcontractor payment"
     }
   ]
 };
